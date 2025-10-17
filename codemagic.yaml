@@ -1,0 +1,22 @@
+workflows:
+  ios-build:
+    name: iOS IPA build
+    environment:
+      xcode: latest
+    scripts:
+      - name: Build iOS .ipa
+        script: |
+          cd iosApp
+          xcodebuild \
+            -workspace iosApp.xcworkspace \
+            -scheme iosApp \
+            -configuration Release \
+            -sdk iphoneos \
+            -archivePath $PWD/build/iosApp.xcarchive archive
+          xcodebuild \
+            -exportArchive \
+            -archivePath $PWD/build/iosApp.xcarchive \
+            -exportOptionsPlist ExportOptions.plist \
+            -exportPath $PWD/build/ipa
+    artifacts:
+      - iosApp/build/ipa/*.ipa
